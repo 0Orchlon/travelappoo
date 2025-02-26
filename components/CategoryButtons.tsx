@@ -7,14 +7,14 @@ import {
 } from "react-native";
 import React, { useRef, useState } from "react";
 import Colors from "@/constants/Colors";
-import destinationCategories from "@/data/categories";
+import destinationCategories from "../data/categories";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 type Props = {
   onCagtegoryChanged: (category: string) => void;
-}
+};
 
-const CategoryButtons = ({onCagtegoryChanged}: Props) => {
+const CategoryButtons = ({ onCagtegoryChanged }: Props) => {
   const scrollRef = useRef<ScrollView>(null);
   const itemRef = useRef<TouchableOpacity[] | null[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -46,7 +46,7 @@ const CategoryButtons = ({onCagtegoryChanged}: Props) => {
         {destinationCategories.map((item, index) => (
           <TouchableOpacity
             key={index}
-            ref={(el) => itemRef.current[index] = el}
+            ref={(el) => (itemRef.current[index] = el)}
             onPress={() => handleSelectCategory(index)}
             style={
               activeIndex === index
