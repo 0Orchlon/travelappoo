@@ -1,24 +1,35 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React, { useRef, useState } from "react";
 import Colors from "@/constants/Colors";
-import { ScrollView } from "react-native-reanimated/lib/typescript/Animated";
+import destinationCategories from "@/data/categories";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { current } from "@reduxjs/toolkit";
-import Animated from "react-native-reanimated";
 
-export default function CategoryButtons() {
+type Props = {
+  onCagtegoryChanged: (category: string) => void;
+}
+
+const CategoryButtons = ({onCagtegoryChanged}: Props) => {
   const scrollRef = useRef<ScrollView>(null);
   const itemRef = useRef<TouchableOpacity[] | null[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
-  const handSelectCategory = (index: number) => {
-    const selected = itemRef.current[index];
 
+  const handleSelectCategory = (index: number) => {
+    const selected = itemRef.current[index];
     setActiveIndex(index);
 
     selected?.measure((x) => {
-      scrollRef, current?.scrollTo({ x: x, y: 0, animated: true });
+      scrollRef.current?.scrollTo({ x: x, y: 0, animated: true });
     });
+
+    onCagtegoryChanged(destinationCategories[index].title);
   };
+
   return (
     <View>
       <Text style={styles.title}>Categories</Text>
@@ -36,9 +47,9 @@ export default function CategoryButtons() {
           <TouchableOpacity
             key={index}
             ref={(el) => itemRef.current[index] = el}
-            onPress={() => handSelectCategory(index)}
+            onPress={() => handleSelectCategory(index)}
             style={
-              activeIndex == index
+              activeIndex === index
                 ? styles.categoryBtnActive
                 : styles.categoryBtn
             }
@@ -46,12 +57,12 @@ export default function CategoryButtons() {
             <MaterialCommunityIcons
               name={item.iconName as any}
               size={20}
-              color={activeIndex == index ? Colors.white : Colors.black}
+              color={activeIndex === index ? Colors.white : Colors.black}
             />
             <Text
               style={
-                activeIndex == index
-                  ? styles.categoryBtnActive
+                activeIndex === index
+                  ? styles.categoryBtnTxtActive
                   : styles.categoryBtnTxt
               }
             >
@@ -62,7 +73,9 @@ export default function CategoryButtons() {
       </ScrollView>
     </View>
   );
-}
+};
+
+export default CategoryButtons;
 
 const styles = StyleSheet.create({
   title: {
@@ -79,11 +92,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     shadowColor: "#333333",
     shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.1,
     shadowRadius: 3,
-  },
-  categoryBtnTxt: {
-    marginLeft: 5,
-    color: Colors.black,
   },
   categoryBtnActive: {
     flexDirection: "row",
@@ -94,6 +104,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     shadowColor: "#333333",
     shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.1,
     shadowRadius: 3,
+  },
+  categoryBtnTxt: {
+    marginLeft: 5,
+    color: Colors.black,
+  },
+  categoryBtnTxtActive: {
+    marginLeft: 5,
+    color: Colors.white,
   },
 });

@@ -4,7 +4,7 @@ import { Tabs } from "expo-router";
 import { FontAwesome, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Colors from "@/constants/Colors";
 
-export default function _layout() {
+export default function Layout() {
   return (
     <Tabs
       screenOptions={{
@@ -53,7 +53,7 @@ export default function _layout() {
         }}
       />
       <Tabs.Screen
-        name="bookmark"
+        name="bookmarks"
         options={{
           tabBarIcon: ({ color }) => (
             <Ionicons name="bookmark" size={28} color={color} />
